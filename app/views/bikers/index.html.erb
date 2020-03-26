@@ -1,3 +1,6 @@
+
+<div id="map"></div>
+
 <div class="container">
   <h1 class="has-text-centered has-text-weight-semibold">台北市YouBike查詢</h1>
   
@@ -31,3 +34,5 @@
   
   </div>
 </div>
+
+<script defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV["google_map_api_key"] %>&callback=initMap"></script>

@@ -1,6 +1,16 @@
 import $ from 'jquery'
 import axios from 'axios'
 
+var map;
+window.initMap = initMap;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 25.0408578889, lng: 121.567904444},
+    zoom: 10
+  });
+  console.log(map);
+};
+
 $(document).ready(()=>{
   $('.searching').on('click',function(event){
     event.preventDefault();
@@ -30,10 +40,10 @@ $(document).ready(()=>{
                               <small class="has-text-grey-light">最後更新時間: ${update_time}</small>
                             </div>
                           </article>`
-          bike_information += bike_list
+          bike_information += bike_list;
         })
 
-        document.querySelector('.bike_information').innerHTML = bike_information
+        $('.bike_information').html(bike_information);
       })
   })
 })
