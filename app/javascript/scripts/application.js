@@ -1,14 +1,14 @@
 import $ from 'jquery'
 import axios from 'axios'
 
-var map;
+let map;
+let markers =[];
 window.initMap = initMap;
 function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map($('#map')[0], {
     center: {lat: 25.0408578889, lng: 121.567904444},
-    zoom: 10
+    zoom: 15
   });
-  console.log(map);
 };
 
 $(document).ready(()=>{
@@ -21,15 +21,37 @@ $(document).ready(()=>{
         let bike_data = Object.values(response.data.retVal);
         let data_area = bike_data.filter(data => {return bike_area === data.sarea});
         let bike_information = [];
+        let position = [];
+
+        data_area.map(data => {
+          let data_position = [
+            {lat: parseFloat(data.lat), lng: parseFloat(data.lng)}
+          ];
+          position = data_position;
+          console.log(position);
+          console.log("xxxxxxxxxxxxxxxxxxxxxx");
+          for (var i = 0; i < position.length; i++) {
+            addMarker(i);
+          };          
+          function addMarker(e) {
+            markers[e] = new google.maps.Marker({
+              position: {
+                lat: position[e].lat,
+                lng: position[e].lng
+              },
+              map: map
+            });
+          };
+        });
+
         
-        console.log(bike_data);
-        console.log(data_area);
         data_area.map(data => {
           let address = data.ar;
           let station = data.sna;
           let available_num = data.sbi;
           let empty_num = data.bemp;
           let update_time = data.mday;
+
           let bike_list = `<article class="message is-primary">
                             <div class="message-header">
                               <div class="column is-8">站名: ${station}</div>
@@ -42,7 +64,6 @@ $(document).ready(()=>{
                           </article>`
           bike_information += bike_list;
         })
-
         $('.bike_information').html(bike_information);
       })
   })
